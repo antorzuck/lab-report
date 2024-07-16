@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Lab Report Cover</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+         
+    body{
+  font-family: "Gabarito", sans-serif;
+    }
+    
+    </style>
+</head>
+<body class="bg-gray-100">
+
+
+    <header class="w-full h-16 bg-cyan-900 shadow-sm p-2 flex items-center justify-between">
+
+        <a href="#">
+            <logo>
+
+                <img src="{% static 'marriage.png' %}" alt="" class="w-10">
+
+            </logo>
+        </a>
+
+    </header>
+
+    <h1 class="text-2xl text-gray-500 font-bold p-8 mx-9">Create your lab report covers in just one click ✨</h1>
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-8 grid grid-cols-1 md:grid-cols-4">
+        <!-- Box with Create Cover text -->
+        <div class="gap-2 h-80 bg-gray-50 rounded-md shadow-sm p-6 text-center flex items-center justify-center flex-col">
+            <h1 class="text-2xl font-semibold text-gray-900">Create Cover</h1>
+           <a id="openModalButton">
+            <img src="{% static 'add.png' %}" alt="" class="w-16">
+           </a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-lg w-1/2 p-8">
+            <h2 class="text-xl font-semibold mb-4">Enter Lab Report Details</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="board_roll" class="block text-gray-700">Roll:</label>
+                    <input type="text" id="board_roll" name="board_roll" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="num_reports" class="block text-gray-700">Number of Lab Reports:</label>
+                    <input type="number" id="num_reports" name="num_reports" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" min="1" required>
+                </div>
+                <div class="mb-4">
+                    <label for="titles" class="block text-gray-700">Titles (comma-separated):</label>
+                    <textarea id="titles" name="titles" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="submission_dates" class="block text-gray-700">Submission Dates (comma-separated):</label>
+                    <textarea id="submission_dates" name="submission_dates" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="subject" class="block text-gray-700">Select Subject:</label>
+                    <select id="subject" name="subject" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{ subject.name }} ({{ subject.code }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="teacher" class="block text-gray-700">Select Teacher:</label>
+                    <select id="teacher" name="teacher" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" id="closeModalButton" class="mr-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Generate Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Modal -->
+    <script>
+        const openModalButton = document.getElementById('openModalButton');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const modal = document.getElementById('myModal');
+
+        openModalButton.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
